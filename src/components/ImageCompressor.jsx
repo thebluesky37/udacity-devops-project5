@@ -16,7 +16,7 @@ export default class imageCompressor extends React.Component {
     };
   }
 
-  handle(e) {
+  handle = e => {
     const imageFile = e.target.files[0];
     this.setState({
       originalLink: URL.createObjectURL(imageFile),
