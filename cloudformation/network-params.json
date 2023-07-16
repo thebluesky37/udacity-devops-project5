@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "EnvironmentName",
-        "ParameterValue": "capstone"
+        "ParameterValue": "udacitydevops5"
     },
     {
         "ParameterKey": "VpcCidrId",
