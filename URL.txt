@@ -1,0 +1,3 @@
+- Source code: https://github.com/thebluesky37/udacity-devops-project5
+- CloudFront URL: https://d38u2fwc0mmoaz.cloudfront.net/
+

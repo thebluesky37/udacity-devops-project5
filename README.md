@@ -1,3 +1,4 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/thebluesky37/udacity-devops-project5/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/thebluesky37/udacity-devops-project5/tree/main)
 # React Image Compressor
 
 ## Overview
