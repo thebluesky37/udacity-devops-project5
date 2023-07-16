@@ -1,0 +1,135 @@
+version: 2.1
+
+jobs:
+  install-deps:
+    docker:
+      - image: node:16
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-packages-{{ checksum "package.json" }}
+            - v1-packages-
+      - run:
+          name: Install packages
+          command: |
+            make install-local
+      - save_cache:
+          paths:
+            - "./package-lock.json"
+            - "./node_modules"
+          key: v1-packages-{{ checksum "package.json" }}
+
+  build:
+    docker:
+      - image: node:16
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-packages-{{ checksum "package.json" }}
+            - v1-packages-
+      - run:
+          name: Build
+          command: |
+            make build-local
+            
+  lint:
+    docker:
+      - image: node:16
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-packages-{{ checksum "package.json" }}
+            - v1-packages-
+      - run:
+          name: Lint
+          command: |
+            make lint
+            
+  build-image:
+    docker:
+      - image: docker:20.10.7-git
+    
+    working_directory: ~/project
+    
+    steps:
+      - setup_remote_docker:
+          version: 20.10.7
+      - checkout
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker build -t udadevops5 .
+            docker tag udadevops5 thebluesky37/udadevops5:latest
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push thebluesky37/udadevops5:latest
+            
+  deploy:
+    docker:
+      - image: amazon/aws-cli
+      
+    working_directory: ~/project
+    
+    environment:
+      TERM: xterm
+    
+    steps:
+      - run:
+          name: Install tar
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Install git
+          command: |
+            yum install -y git
+      - run:
+          name: Install make, wget, rsync
+          command: |
+            yum install -y make wget rsync
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["ad:b1:85:cb:d2:63:fb:e9:dd:f1:00:c6:f3:20:e1:a9"]
+      - run: 
+          name: Install yq
+          command: |
+            make install-yq
+      - run:
+          name: Install ansible
+          command: |
+            amazon-linux-extras install epel -y
+            yum install -y ansible
+            ansible-galaxy collection install community.general
+      - run:
+          name: Deploy project
+          no_output_timeout: 30m
+          command: |
+            ./deploy.sh
+
+workflows:
+  default:
+    jobs:
+      - install-deps
+      - lint
+      - build:
+          requires:
+            - install-deps
+            - lint
+      
+      - build-image:
+          requires:
+            - build
+      
+      - deploy:
+          requires:
+            - build-image

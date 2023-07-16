@@ -16,7 +16,7 @@ export default class imageCompressor extends React.Component {
     };
   }
 
-  handle = e => {
+  handle(e) {
     const imageFile = e.target.files[0];
     this.setState({
       originalLink: URL.createObjectURL(imageFile),
@@ -24,13 +24,14 @@ export default class imageCompressor extends React.Component {
       outputFileName: imageFile.name,
       uploadImage: true
     });
-  };
+  }
+  
 
-  changeValue = e => {
+  changeValue(e) {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  click = e => {
+  click(e) {
     e.preventDefault();
 
     const options = {
