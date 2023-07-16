@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  capstonecloudfrontdistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: ""
+        Origins:
+          - Id: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
+            DomainName: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
+            CustomOriginConfig:
+              OriginProtocolPolicy: "http-only"
+        DefaultCacheBehavior:
+          TargetOriginId: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
+          ViewerProtocolPolicy: "allow-all"
+Outputs:
+  CloudFrontDistributionURL:
+    Description: URL of the CloudFront distribution
+    Value: !Sub "https://${capstonecloudfrontdistribution}.cloudfront.net"

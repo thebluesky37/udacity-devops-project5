@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone
+spec:
+  selector:
+    matchLabels:
+      app: capstone
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: capstone
+    spec:
+      containers:
+      - name: capstone
+        image: thebluesky37/udadevops5
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: capstone
+spec:
+  selector:
+    app: capstone
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
