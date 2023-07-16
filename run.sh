@@ -8,7 +8,7 @@ create ()
         ${parameters_opt} \
         --tags Key=Name,Value=${environment_name} \
         --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
-        --region=us-east-2
+        --region=us-east-1
 
     aws cloudformation wait \
         stack-create-complete \
@@ -24,7 +24,7 @@ update ()
         ${parameters_opt} \
         --tags Key=Name,Value=${environment_name} \
         --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
-        --region=us-east-2
+        --region=us-east-1
     
     aws cloudformation wait \
         stack-update-complete \
@@ -59,7 +59,7 @@ main()
 }
 
 scripts_path=cloudformation/
-environment_name=capstone
+environment_name=udacitydevops5
 stack=$1
 stack_name=$environment_name-$stack
 template_body=$stack.yaml
