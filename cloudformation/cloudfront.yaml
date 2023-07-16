@@ -7,13 +7,17 @@ Resources:
         Enabled: true
         DefaultRootObject: ""
         Origins:
-          - Id: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
-            DomainName: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
+          - Id: udacitydevops5-LoadBalancer-1314534807.us-east-1.elb.amazonaws.com
+            DomainName: udacitydevops5-LoadBalancer-1314534807.us-east-1.elb.amazonaws.com
             CustomOriginConfig:
               OriginProtocolPolicy: "http-only"
         DefaultCacheBehavior:
-          TargetOriginId: capstone-loadbalancer-252989174.us-east-2.elb.amazonaws.com
+          TargetOriginId: udacitydevops5-LoadBalancer-1314534807.us-east-1.elb.amazonaws.com
           ViewerProtocolPolicy: "allow-all"
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
 Outputs:
   CloudFrontDistributionURL:
     Description: URL of the CloudFront distribution
